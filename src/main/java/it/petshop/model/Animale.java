@@ -25,7 +25,7 @@ public class Animale implements Serializable {
 
 	private String nome;
 
-	private int prezzo;
+	private Double prezzo;
 
 	@Column(name="tipo_animale")
 	private String tipoAnimale;
@@ -62,13 +62,11 @@ public class Animale implements Serializable {
 		this.nome = nome;
 	}
 
-	public int getPrezzo() {
+	public Double getPrezzo() {
 		return this.prezzo;
 	}
 
-	public void setPrezzo(int prezzo) {
-		this.prezzo = prezzo;
-	}
+	
 
 	public String getTipoAnimale() {
 		return this.tipoAnimale;
@@ -85,5 +83,19 @@ public class Animale implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+
+	@Override
+	public String toString() {
+		return "Animale [matricola=" + matricola + ", dataAcquisto=" + dataAcquisto + ", nome=" + nome + ", prezzo="
+				+ prezzo + ", tipoAnimale=" + tipoAnimale + ", cliente=" + cliente + "]";
+	}
+
+	public void setPrezzo(Double prezzo) {
+		this.prezzo = prezzo;
+	}
+
+
+
+	
 
 }

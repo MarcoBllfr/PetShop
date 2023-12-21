@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import it.petshop.model.Animale;
 import it.petshop.model.Cliente;
@@ -55,7 +56,7 @@ public class Servizi {
             clienteLista.add(cliente);
 			
 			}else {
-				System.out.println("Tel gia presente");
+				System.out.println("Cliente gia inserito nella lista");
 			}
 			}
 		}
@@ -82,7 +83,7 @@ public class Servizi {
 			int matricolaA = Integer.parseInt(data[7]);
 			String dataAcqStr = data[8];
 			Date dataAcq = dateFormat.parse(dataAcqStr);
-			int prezzo = Integer.parseInt(data[9]);
+			Double prezzo = Double.parseDouble(data[9]);
 			System.out.println(telC+" " + tipoA+" " + nomeA+" " + matricolaA+" " + dataAcqStr+" "+prezzo);
 			Animale animale = new Animale();
 			animale.setDataAcquisto(dataAcq);
@@ -93,8 +94,6 @@ public class Servizi {
 						animale.setCliente(cliente);
 						break;
 					}
-				}else {
-					System.out.println("numero non trovato");
 				}
 			}
 			animale.setMatricola(matricolaA);
@@ -111,7 +110,7 @@ public class Servizi {
     
     
 	 for (Cliente cliente : clienteLista) {
-		 	entityManager.getTransaction().begin();
+		 entityManager.getTransaction().begin();
             System.out.println("Inserimento nel database: " + cliente);
             Cliente clienteCaricamento = new Cliente();
             clienteCaricamento.setNtelefono(cliente.getNtelefono());
@@ -119,10 +118,21 @@ public class Servizi {
             clienteCaricamento.setCognomeCliente(cliente.getCognomeCliente());
             clienteCaricamento.setCitta(cliente.getCitta());
             clienteCaricamento.setIndirizzo(cliente.getIndirizzo());
-            entityManager.persist(clienteCaricamento);
-            entityManager.getTransaction().commit();
+            
+            // Creo una quer per controllare se gia è presente il cliente
+            String jpqlQuery = "SELECT c.ntelefono FROM Cliente c WHERE c.ntelefono = :telcheck";
+            Query query = entityManager.createQuery(jpqlQuery);
+            query.setParameter("telcheck", cliente.getNtelefono());
+            List<Cliente> risultati = query.getResultList();
+            //eseguo un controllo
+            if(risultati.isEmpty()) {
+            	entityManager.persist(clienteCaricamento);
+                entityManager.getTransaction().commit();
+            }else {  
+            	entityManager.getTransaction().commit();
+            System.out.println("Cliente gia esistente sul db");
         }
-    
+	 }
 	 for (Animale animale : animaleLista) {
 		 entityManager.getTransaction().begin();
 		 System.out.println("Inserimento nel database: " + animale);
@@ -133,12 +143,21 @@ public class Servizi {
 		 animaleCaricamento.setPrezzo(animale.getPrezzo());
 		 animaleCaricamento.setTipoAnimale(animale.getTipoAnimale());
 		 animaleCaricamento.setDataAcquisto(animale.getDataAcquisto());
-		 entityManager.persist(animaleCaricamento);
-		 entityManager.getTransaction().commit();
+		// stessa funzione per animali
+	     String jpqlQuery2 = "SELECT a.matricola FROM Animale a WHERE a.matricola = :matricolacheck";
+	     Query query2 = entityManager.createQuery(jpqlQuery2);
+	     query2.setParameter("matricolacheck", animale.getMatricola());
+	     List<Animale> risultati2 = query2.getResultList();
+	     //eseguo un controllo
+	     if(risultati2.isEmpty()) {
+	    	 entityManager.persist(animaleCaricamento);
+			 entityManager.getTransaction().commit();
+	     }else {     
+	    	 entityManager.getTransaction().commit();
+	     System.out.println("Animale gia presente sul db");
 	 }
-  
-    
-
+		 
+	 }
   		entityManager.close();
   		emFactory.close();
 }

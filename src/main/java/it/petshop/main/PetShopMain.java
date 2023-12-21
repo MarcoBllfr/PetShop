@@ -17,16 +17,20 @@ public class PetShopMain {
 		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("PetShop");
 		EntityManager entityManager = emFactory.createEntityManager();
 		
-		/*
+		
 		Servizi service = new Servizi();
 		service.caricDati(emFactory , entityManager);
-		*/
+		
 		ServizioStampa stampa = new ServizioStampa();
 		//stampa.stampaVideo();
 		System.out.println("inserisci il telefono del cliente");
 		int ntelefono = scanner.nextInt();
-		stampa.stampaFileCliente(ntelefono);
-		stampa.stampaOrdinata();
+		stampa.stampaFileClienteTxT(ntelefono);
+		stampa.stampaOrdinataTxT();
+		
+		stampa.stampaReportPdf();
+		stampa.stampaFileClientePdf(ntelefono);
+		
 		
 	}
 

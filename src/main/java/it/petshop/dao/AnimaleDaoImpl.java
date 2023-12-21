@@ -30,7 +30,7 @@ public class AnimaleDaoImpl implements AnimaleDao {
 					animalel.setDataAcquisto(resultSet.getDate("data_acquisto"));
 					animalel.setMatricola(resultSet.getInt("matricola"));
 					animalel.setNome(resultSet.getString("nome"));
-					animalel.setPrezzo(resultSet.getInt("prezzo"));
+					animalel.setPrezzo(resultSet.getDouble("prezzo"));
 					animalel.setTipoAnimale(resultSet.getString("tipo_animale"));
 					animalel.setCliente(clienteDao.getAllbyId(resultSet.getInt("ntelefono")));
 					animaliLista.add(animalel);
@@ -67,7 +67,7 @@ public class AnimaleDaoImpl implements AnimaleDao {
 					animalel.setDataAcquisto(resultSet.getDate("a.data_acquisto"));
 					animalel.setMatricola(resultSet.getInt("a.matricola"));
 					animalel.setNome(resultSet.getString("a.nome"));
-					animalel.setPrezzo(resultSet.getInt("a.prezzo"));
+					animalel.setPrezzo(resultSet.getDouble("a.prezzo"));
 					animalel.setTipoAnimale(resultSet.getString("a.tipo_animale"));
 					animaliLista.add(animalel);
 				}
