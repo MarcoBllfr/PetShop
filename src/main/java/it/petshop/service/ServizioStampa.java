@@ -59,52 +59,59 @@ public class ServizioStampa {
 
 	//Qui stampo l'elenco degli animali di un determinato cliente
 	public void stampaFileClienteTxT(int ntelefono) {
-		System.out.println("----Avvio la stampa del TxT-----");
-		
-		 
-		List<Animale> animaliStampa = animaleDao.getByCliente(ntelefono);
-		 	String nomeCliente = clienteDao.getAllbyId(ntelefono).getNomeCliente();
-		 	String cognomeCliente = clienteDao.getAllbyId(ntelefono).getCognomeCliente();
-		 	
-		 	String nomeFile = "/"+nomeCliente+"_"+cognomeCliente+".txt";
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(PATHFILE+nomeFile));
-			writer.write("*Cliente: "+nomeCliente + " "+cognomeCliente+"|"+"N telefono: "+ ntelefono+"*");
-			writer.newLine();
+			if(controlloSuQuery(ntelefono)== true) {
+			System.out.println("----Avvio la stampa del TxT-----");
 			
-			// mi creo un header per le informazioni da stampare
-			String hDtata =StringUtils.rightPad("Data acquisto",15,"");
-			String hMatricola =StringUtils.rightPad("Matricola",10,"");
-			String hAnimale = StringUtils.rightPad("Animale",10,"");
-			String hPrezzo =StringUtils.rightPad("Prezzo",10,"");
-			writer.write(hMatricola+"|"+hDtata+"|"+hAnimale+"|"+hPrezzo+"|");
-			writer.newLine();
-			
-			for(Animale animali : animaliStampa) {
-				// mi preparo le string formattate
-		    String stringData = animali.getDataAcquisto().toString();
-			String dataFormattata = StringUtils.rightPad(stringData,15,"");
-			String stringMatricola =Integer.toString(animali.getMatricola());
-			String matricolaFormat = StringUtils.rightPad(stringMatricola,10,"");
-			String stringTipo =animali.getTipoAnimale();
-			String tipoAnimaleFormat = StringUtils.rightPad(stringTipo,10 ,"");
-			String stringPrezzo = Double.toString(animali.getPrezzo());
-			String prezzoFormat = StringUtils.rightPad(stringPrezzo,10 ,"");
-				//stampo le string
-			
-			writer.write(
-			matricolaFormat + "|"+
-			dataFormattata+"|"+
-			tipoAnimaleFormat +"|" +
-			prezzoFormat+"|"
-			);
-			writer.newLine();	
-						 	}
-							writer.close();
-						} catch (IOException e) {
-							System.out.println("Errore: "+ e);
-						}
-		System.out.println("----Fine stampa del TxT-----");
+			 
+			List<Animale> animaliStampa = animaleDao.getByCliente(ntelefono);
+			 	String nomeCliente = clienteDao.getAllbyId(ntelefono).getNomeCliente();
+			 	String cognomeCliente = clienteDao.getAllbyId(ntelefono).getCognomeCliente();
+			 	
+			 	String nomeFile = "/"+nomeCliente+"_"+cognomeCliente+".txt";
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(PATHFILE+nomeFile));
+				writer.write("*Cliente: "+nomeCliente + " "+cognomeCliente+"|"+"N telefono: "+ ntelefono+"*");
+				writer.newLine();
+				
+				// mi creo un header per le informazioni da stampare
+				String hDtata =StringUtils.rightPad("Data acquisto",15,"");
+				String hMatricola =StringUtils.rightPad("Matricola",10,"");
+				String hAnimale = StringUtils.rightPad("Animale",10,"");
+				String hPrezzo =StringUtils.rightPad("Prezzo",10,"");
+				writer.write(hMatricola+"|"+hDtata+"|"+hAnimale+"|"+hPrezzo+"|");
+				writer.newLine();
+				
+				for(Animale animali : animaliStampa) {
+					// mi preparo le string formattate
+			    String stringData = animali.getDataAcquisto().toString();
+				String dataFormattata = StringUtils.rightPad(stringData,15,"");
+				String stringMatricola =Integer.toString(animali.getMatricola());
+				String matricolaFormat = StringUtils.rightPad(stringMatricola,10,"");
+				String stringTipo =animali.getTipoAnimale();
+				String tipoAnimaleFormat = StringUtils.rightPad(stringTipo,10 ,"");
+				String stringPrezzo = Double.toString(animali.getPrezzo());
+				String prezzoFormat = StringUtils.rightPad(stringPrezzo,10 ,"");
+					//stampo le string
+				
+				writer.write(
+				matricolaFormat + "|"+
+				dataFormattata+"|"+
+				tipoAnimaleFormat +"|" +
+				prezzoFormat+"|"
+				);
+				writer.newLine();	
+							 	}
+								writer.close();
+							} catch (IOException e) {
+								System.out.println("Errore: "+ e);
+							}
+			System.out.println("----Fine stampa del TxT-----");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -157,58 +164,67 @@ public class ServizioStampa {
 	
 	//operazioni di stampa in pdf
 	public void stampaFileClientePdf(int ntelefono) {
-		System.out.println("----Avvio la stampa del file Pdf-----");
-		
-		 
-		List<Animale> animaliStampa = animaleDao.getByCliente(ntelefono);
-		 	String nomeCliente = clienteDao.getAllbyId(ntelefono).getNomeCliente();
-		 	String cognomeCliente = clienteDao.getAllbyId(ntelefono).getCognomeCliente();
-		 	
-		 	
 		try {
-			String nomeFile = "/"+nomeCliente+"_"+cognomeCliente+".pdf";
-		 	String destFile = PATHFILE+nomeFile;
-		    Document document = new Document();
-			   
-		    FileOutputStream outputStream = new FileOutputStream(destFile);
-		    PdfWriter.getInstance(document, outputStream);
-		    
-		    //Apro la scrittura del pdf
-		    document.open();
-		    document.add(new Paragraph("*Cliente: "+nomeCliente + " "+cognomeCliente+"|"+"N telefono: "+ ntelefono+"*" , font));
+			if(controlloSuQuery(ntelefono)== true) {
+			System.out.println("----Avvio la stampa del file Pdf-----");
 			
-			// mi creo un header per le informazioni da stampare
-			String hDtata =StringUtils.rightPad("Data acquisto",15,"");
-			String hMatricola =StringUtils.rightPad("Matricola",10,"");
-			String hAnimale = StringUtils.rightPad("Animale",10,"");
-			String hPrezzo =StringUtils.rightPad("Prezzo",10,"");
-		
-			document.add(new Paragraph(hMatricola+"|"+hDtata+"|"+hAnimale+"|"+hPrezzo+"|" , font));
 			 
-			for(Animale animali : animaliStampa) {
-				// mi preparo le string formattate
-		    String stringData = animali.getDataAcquisto().toString();
-			String dataFormattata = StringUtils.rightPad(stringData,15,"");
-			String stringMatricola =Integer.toString(animali.getMatricola());
-			String matricolaFormat = StringUtils.rightPad(stringMatricola,10,"");
-			String stringTipo =animali.getTipoAnimale();
-			String tipoAnimaleFormat = StringUtils.rightPad(stringTipo,10 ,"");
-			String stringPrezzo = Double.toString(animali.getPrezzo());
-			String prezzoFormat = StringUtils.rightPad(stringPrezzo,10 ,"");
-				//stampo le string
-			document.add(new Paragraph( 
-					matricolaFormat + "|"+
-							dataFormattata+"|"+
-							tipoAnimaleFormat +"|" +
-							prezzoFormat+"|"
-					      ,font));
+			List<Animale> animaliStampa = animaleDao.getByCliente(ntelefono);
+			 	String nomeCliente = clienteDao.getAllbyId(ntelefono).getNomeCliente();
+			 	String cognomeCliente = clienteDao.getAllbyId(ntelefono).getCognomeCliente();
+			 	
+			 	
+			try {
+				String nomeFile = "/"+nomeCliente+"_"+cognomeCliente+".pdf";
+			 	String destFile = PATHFILE+nomeFile;
+			    Document document = new Document();
+				   
+			    FileOutputStream outputStream = new FileOutputStream(destFile);
+			    PdfWriter.getInstance(document, outputStream);
+			    
+			    //Apro la scrittura del pdf
+			    document.open();
+			    document.add(new Paragraph("*Cliente: "+nomeCliente + " "+cognomeCliente+"|"+"N telefono: "+ ntelefono+"*" , font));
+				
+				// mi creo un header per le informazioni da stampare
+				String hDtata =StringUtils.rightPad("Data acquisto",15,"");
+				String hMatricola =StringUtils.rightPad("Matricola",10,"");
+				String hAnimale = StringUtils.rightPad("Animale",10,"");
+				String hPrezzo =StringUtils.rightPad("Prezzo",10,"");
+			
+				document.add(new Paragraph(hMatricola+"|"+hDtata+"|"+hAnimale+"|"+hPrezzo+"|" , font));
+				 
+				for(Animale animali : animaliStampa) {
+					// mi preparo le string formattate
+			    String stringData = animali.getDataAcquisto().toString();
+				String dataFormattata = StringUtils.rightPad(stringData,15,"");
+				String stringMatricola =Integer.toString(animali.getMatricola());
+				String matricolaFormat = StringUtils.rightPad(stringMatricola,10,"");
+				String stringTipo =animali.getTipoAnimale();
+				String tipoAnimaleFormat = StringUtils.rightPad(stringTipo,10 ,"");
+				String stringPrezzo = Double.toString(animali.getPrezzo());
+				String prezzoFormat = StringUtils.rightPad(stringPrezzo,10 ,"");
+					//stampo le string
+				document.add(new Paragraph( 
+						matricolaFormat + "|"+
+								dataFormattata+"|"+
+								tipoAnimaleFormat +"|" +
+								prezzoFormat+"|"
+						      ,font));
+				}
+				document.close();
+			    outputStream.close();
+							} catch (IOException | DocumentException e) {
+								System.out.println("Errore: "+ e);
+							}
+			System.out.println("----Fine stampa del file Pdf-----");
+			}else {
+				System.out.println("Numero inesistente");
 			}
-			document.close();
-	        outputStream.close();
-						} catch (IOException | DocumentException e) {
-							System.out.println("Errore: "+ e);
-						}
-		System.out.println("----Fine stampa del file Pdf-----");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -267,11 +283,28 @@ public class ServizioStampa {
 		System.out.println("----Fine stampa del report pdf-----");
 	}
 	
-	
+	private boolean controlloSuQuery(int ntelefono) throws SQLException {
+		boolean esiste = false;
+		DbHandler dbHandler = DbHandler.getInstance();
+			 Connection connection = dbHandler.getConnection();
+			 String query = "SELECT c.nome_cliente, c.cognome_cliente, a.nome, a.tipo_animale , a.matricola , a.prezzo , a.data_acquisto "
+			 		+ "FROM cliente c "
+			 		+ "JOIN animale a ON c.ntelefono = a.ntelefono "
+			 		+ "WHERE a.ntelefono = ?";
+	         PreparedStatement preparedStatement = connection.prepareStatement(query);
+	            preparedStatement.setInt(1, ntelefono);
+	            ResultSet resultSet = preparedStatement.executeQuery();
+		if(resultSet.next()) {
+			esiste=true;
+		}else {
+			esiste = false;
+		}
+		return esiste;
+	}
 
 	
 	//Metodo per ottenere gli animali dal db (Da inserire nel Dao?)
-	public List<Animale> getAnimaliOrdinati() {
+	private List<Animale> getAnimaliOrdinati() {
 		//aggiungere intestazione e data primo elemento 
 		List<Animale> animaliLista = new ArrayList<Animale>();
 		ClienteDaoImpl clienteDao = new ClienteDaoImpl();
