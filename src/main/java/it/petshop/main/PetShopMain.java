@@ -17,7 +17,6 @@ public class PetShopMain {
 		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("PetShop");
 		EntityManager entityManager = emFactory.createEntityManager();
 		
-		
 		Servizi service = new Servizi();
 		service.caricDati(emFactory , entityManager);
 		

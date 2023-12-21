@@ -7,10 +7,10 @@ import it.petshop.model.Animale;
 
 public interface AnimaleDao {
 	List<Animale> getAll();
-	Animale getAllbyId();
+	Animale getAllbyId(int matricola);
 	List<Animale>getByCliente(int ntelefono);
 	 void insert(Animale animale);
 	 void update(Animale animale);
-	 void delete(Animale animale);
+	 void delete(int matricola);
 	
 }

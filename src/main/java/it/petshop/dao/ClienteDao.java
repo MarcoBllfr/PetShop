@@ -11,6 +11,6 @@ public interface ClienteDao {
 	Cliente getAllbyId(int ntelefono);
 	 void insert(Cliente cliente);
 	 void update(Cliente cliente);
-	 void delete(Cliente cliente);
+	 void delete(int ntelefono);
 	
 }
