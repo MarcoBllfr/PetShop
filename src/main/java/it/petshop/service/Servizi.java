@@ -153,7 +153,7 @@ public class Servizi {
 	    	 entityManager.persist(animaleCaricamento);
 			 entityManager.getTransaction().commit();
 	     }else {     
-	    	 entityManager.getTransaction().commit();
+	     entityManager.getTransaction().commit();
 	     System.out.println("Animale gia presente sul db");
 	 }
 		 
